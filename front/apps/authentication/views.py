@@ -4,9 +4,10 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 # Create your views here.
+from django.forms.models import ModelMultipleChoiceField
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, SignUpForm
+from .forms import LoginForm, SignUpForm, ResetUserForm
 
 
 def login_view(request):
@@ -54,3 +55,19 @@ def register_user(request):
         form = SignUpForm()
 
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
+
+def reset_user(request):
+    sucess = False
+    msg = None
+    
+    if request.method == 'GET':
+        form = ResetUserForm(request.POST)
+        if form.is_valid():
+            
+            email = form.cleaned_data.get("email")
+            print('Peguei o email....: ', email)
+            sucess = True
+        else:
+            msg = 'Form is not valid'
+
+    return render(request, "auth-reset-pass.html" ,{"form": form, "sucess": sucess, "msg": msg})
