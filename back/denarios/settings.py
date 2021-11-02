@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os, sys
 from pathlib import Path
 from decouple import config
+from dj_database_url import parse as dburl
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-305n6d$)+$wuri=^52**!%xwk_+9aax*n6t-#5#p3xmd35r_$*'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ENVIRONMENT = config("ENVIRONMENT", default="development")
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.107', config('SERVER', default='127.0.0.1')]
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config("DEBUG", cast=bool, default=False)
+
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.107', config('SERVER', default='127.0.0.1')]
+ALLOWED_HOSTS = [host for host in config("ALLOWED_HOSTS").split(",")]
 
 
 # Application definition
@@ -38,9 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
