@@ -34,6 +34,12 @@ DEBUG = config("DEBUG", cast=bool, default=False)
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.107', config('SERVER', default='127.0.0.1')]
 ALLOWED_HOSTS = [host for host in config("ALLOWED_HOSTS").split(",")]
 
+#URLS API
+BINACE_API_URL = config("BINANCE_API_URL")
+
+#KEYS API
+BINANCE_API_KEY = config("BINANCE_API_KEY")
+
 
 # Application definition
 
@@ -86,7 +92,6 @@ WSGI_APPLICATION = 'denarios.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }

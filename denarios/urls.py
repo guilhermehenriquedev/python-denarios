@@ -21,7 +21,7 @@ router.register(r'exchanges', exchanges.ExchangeViewSet, basename='exchanges') #
 
 urlpatterns = [
     path('', homeviews.index, name="index"),
-    path('integracao/', include(router.urls)),
+    path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token, name='permanent_auth_token'),
     path('jwt-token/', TokenObtainPairView.as_view(), name='jwt_auth_token_obtain'),
     path('jwt-token/refresh/', TokenRefreshView.as_view(), name='jwt_auth_token_refresh')

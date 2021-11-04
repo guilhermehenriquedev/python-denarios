@@ -17,4 +17,4 @@ def painel(request):
         'environment':settings.ENVIRONMENT})
 
 def error_teste(request):
-    raise Exception("Teste de erro (debug) - manda email")
+    raise Exception("ERROR")
