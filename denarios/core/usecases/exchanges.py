@@ -2,43 +2,50 @@ import requests
 import json
 from denarios.core.helpers.criptos import criptos
 from denarios.settings import BINACE_API_URL, BINANCE_API_KEY 
+from django.db.utils import InterfaceError
 
 class Exchanges:
     
-    def binance(self, payload=None, headers=None):
+    def binance(self, headers=None):
         
         prices_criptos = []
         for name_cripto in criptos:
-            
-            name_cripto = name_cripto + 'BTC'
-            url = BINACE_API_URL + f"/sapi/v1/margin/priceIndex?symbol={name_cripto}"
 
-            response = requests.request("GET", url, headers=headers, data=payload)
-            data = response.json()
-            print('data....: ', data)
+            try:
             
-            #TODO: Fazer com que o payload venha dessa forma, caso nao tenha valor no request pegue um default
-            '''
-            prices_criptos += {
-                    'no_cripto': data['symbol'],
-                    'vl_compra': data['price']
+                name_cripto  = name_cripto + 'BTC'
+                url          = BINACE_API_URL + f"/sapi/v1/margin/priceIndex?symbol={name_cripto}"
+                response     = requests.request("GET", url, headers=headers)
+                data         = response.json()
+
+                preco_compra = data.get('price')
+
+                payload = {
+                    "no_cripto": name_cripto,
+                    "vl_compra": preco_compra
                     } 
-            '''
 
-        return prices_criptos 
+                prices_criptos.append(payload)
+
+            except Exception as err:
+                print(f'Falha ao fazer GET da moeda...: {name_cripto}')
+                continue
+
+        payload_binance = {"binance": prices_criptos}
+        return payload_binance 
 
 
     def execute(self):
 
-        payload={}
         headers = {
             'Content-Type': 'application/json',
             'X-MBX-APIKEY': BINANCE_API_KEY 
         }
 
-        binance = self.binance(payload=payload, headers=headers)
-        
-        print('binance....: ', binance)
+        binance = self.binance(headers=headers)
+
+        exchanges = [binance,] 
+        return exchanges
 
 if __name__ == '__main__':
 
