@@ -14,7 +14,7 @@ class ExchangeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='list')
     def exchange_list(self, request):
         ''' Lista todas as criptomoedas das exchanges '''
-        #http://192.168.0.107:8005/api/exchanges/list/
+        #http://192.168.0.107:8005/api/exchanges/list/a
 
         if request.method == 'GET':
 
