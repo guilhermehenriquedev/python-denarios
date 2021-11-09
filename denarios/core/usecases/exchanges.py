@@ -17,9 +17,9 @@ class Exchanges:
                 url          = BINACE_API_URL + f"/sapi/v1/margin/priceIndex?symbol={name_cripto}"
                 response     = requests.request("GET", url, headers=headers)
                 data         = response.json()
-
                 preco_compra = data.get('price')
-
+                
+                #TODO: Falta colocar informação de preço de venda no payload
                 payload = {
                     "no_cripto": name_cripto,
                     "vl_compra": preco_compra
