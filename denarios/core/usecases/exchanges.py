@@ -17,7 +17,6 @@ class Exchanges:
     def binance(self, headers=None, par_crypt=None):
         
         try:
-
             url          = BINACE_API_URL + "/api/v3/ticker/price" 
             response     = requests.request("GET", url, headers=headers)
             data         = response.json()
@@ -26,11 +25,8 @@ class Exchanges:
             return {'message': 'Erro ao fazer GET'}
 
         chosen_crypts = criptos(par=par_crypt)
-        data = [item for item in data if item['symbol'] in chosen_crypts]
-        print('data....:', data)
-        
+        data = [{'no_cripto': item['symbol'], 'vl_compra': item['price']} for item in data if item['symbol'] in chosen_crypts]
         return data if data else {'message': 'Sem dados para exibir'} 
-        
 
     def execute(self):
 
