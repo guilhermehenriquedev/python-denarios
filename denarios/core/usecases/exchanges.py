@@ -1,51 +1,45 @@
+import time
 import requests
 import json
 from denarios.core.helpers.criptos import criptos
 from denarios.settings import BINACE_API_URL, BINANCE_API_KEY 
 from django.db.utils import InterfaceError
+from datetime import timedelta
 
 class Exchanges:
+
+    def __init__(self):
+       self.headers = {
+            'Content-Type': 'application/json'
+        } 
+
     
-    def binance(self, headers=None):
+    def binance(self, headers=None, par_crypt=None):
         
-        prices_criptos = []
-        for name_cripto in criptos:
+        try:
 
-            try:
-            
-                name_cripto  = name_cripto + 'BTC'
-                url          = BINACE_API_URL + f"/sapi/v1/margin/priceIndex?symbol={name_cripto}"
-                response     = requests.request("GET", url, headers=headers)
-                data         = response.json()
-                preco_compra = data.get('price')
-                
-                #TODO: Falta colocar informação de preço de venda no payload
-                payload = {
-                    "no_cripto": name_cripto,
-                    "vl_compra": preco_compra
-                    } 
+            url          = BINACE_API_URL + "/api/v3/ticker/price" 
+            response     = requests.request("GET", url, headers=headers)
+            data         = response.json()
 
-                prices_criptos.append(payload)
+        except Exception as err:
+            return {'message': 'Erro ao fazer GET'}
 
-            except Exception as err:
-                print(f'Falha ao fazer GET da moeda...: {name_cripto}')
-                continue
-
-        payload_binance = {"binance": prices_criptos}
-        return payload_binance 
-
+        chosen_crypts = criptos(par=par_crypt)
+        data = [item for item in data if item['symbol'] in chosen_crypts]
+        print('data....:', data)
+        
+        return data if data else {'message': 'Sem dados para exibir'} 
+        
 
     def execute(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-            'X-MBX-APIKEY': BINANCE_API_KEY 
-        }
+        start_time = time.time()
+        binance = self.binance(headers=self.headers, par_crypt='BRL')
+        elapsed_time = time.time() - start_time
+        print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))} ')
 
-        binance = self.binance(headers=headers)
-
-        exchanges = [binance,] 
-        return exchanges
+        return binance 
 
 if __name__ == '__main__':
 
