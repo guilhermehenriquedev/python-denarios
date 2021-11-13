@@ -2,7 +2,7 @@ import time
 import requests
 import json
 from denarios.core.helpers.criptos import criptos
-from denarios.settings import BINACE_API_URL, BINANCE_API_KEY 
+from denarios.settings.base import BINACE_API_URL, BINANCE_API_KEY 
 from django.db.utils import InterfaceError
 from datetime import timedelta
 
