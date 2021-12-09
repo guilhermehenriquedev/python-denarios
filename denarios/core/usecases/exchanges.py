@@ -30,7 +30,6 @@ class Exchanges:
     def execute(self):
 
         start_time = time.time()
-
         binance = self.binance(headers=self.headers, par_crypt='BRL')
 
         #montar payload
