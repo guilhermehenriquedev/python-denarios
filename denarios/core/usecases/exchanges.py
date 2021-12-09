@@ -30,14 +30,15 @@ class Exchanges:
     def execute(self):
 
         start_time = time.time()
-        binance = self.binance(headers=self.headers, par_crypt='BRL')
 
+        binance = self.binance(headers=self.headers, par_crypt='BRL')
 
         #montar payload
         data = [
                 {'binance': binance},
                 {'foxbit': ''}
                ]  
+
         elapsed_time = time.time() - start_time
         print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))} ')
 
