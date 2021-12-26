@@ -40,7 +40,6 @@ BINACE_API_URL = config("BINANCE_API_URL")
 #KEYS API
 BINANCE_API_KEY = config("BINANCE_API_KEY")
 
-
 # Application definition
 
 INSTALLED_APPS = [
