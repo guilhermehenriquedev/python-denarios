@@ -40,10 +40,12 @@ class Exchanges:
         binance = self.binance(headers=self.headers, par_crypt='BRL')
         
 
-        data = [
-                {'binance': binance},
-                {'foxbit': ''}
-               ]  
+        #data = [
+        #        {'binance': binance},
+        #        {'foxbit': ''}
+        #       ]  
+        
+        data = binance
 
         elapsed_time = time.time() - start_time
         print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))} ')
