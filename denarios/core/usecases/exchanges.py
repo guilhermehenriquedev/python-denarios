@@ -24,29 +24,32 @@ class Exchanges:
             return {'message': 'Erro ao fazer GET'}
 
         chosen_crypts = criptos(par=par_crypt)
+
         data = [{
             'no_cripto': item['symbol'],
             'vl_venda': item['price'],
             'vl_compra': item['price']
         } for item in data if item['symbol'] in chosen_crypts]
+
         return data if data else {'message': 'Sem dados para exibir'} 
     
     def foxbit(self):
-        pass
+        return ''
 
     def execute(self):
 
         start_time = time.time()
         binance = self.binance(headers=self.headers, par_crypt='BRL')
+        foxbit = self.foxbit() 
         
 
         data = [
                 {'binance': binance},
-                {'foxbit': ''}
+                {'foxbit': foxbit}
                ]  
 
         elapsed_time = time.time() - start_time
-        print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))} ')
+        print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))}')
 
         return data 
 

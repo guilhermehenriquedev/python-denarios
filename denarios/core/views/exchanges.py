@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.forms.models import model_to_dict
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from denarios.core.usecases.exchanges import Exchanges
 
@@ -20,4 +20,4 @@ class ExchangeViewSet(viewsets.ModelViewSet):
 
             list_exchanges = Exchanges()
             data = list_exchanges.execute()
-            return Response(data={'data':data})
+            return Response(data={'data':data}, status=status.HTTP_200_OK)
