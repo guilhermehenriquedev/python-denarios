@@ -44,9 +44,12 @@ class Exchanges:
         
 
         data = [
-                {'binance': binance},
-                {'foxbit': foxbit}
+                {
+                'binance': binance,
+                'foxbit': foxbit
+                }
                ]  
+
         elapsed_time = time.time() - start_time
         print(f'Tempo....: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))}')
 
