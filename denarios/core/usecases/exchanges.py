@@ -16,9 +16,9 @@ class Exchanges:
     def binance(self, headers=None, par_crypt=None):
         
         try:
-            url          = BINACE_API_URL + "/api/v3/ticker/price" 
-            response     = requests.request("GET", url, headers=headers)
-            data         = response.json()
+            url      = BINACE_API_URL + "/api/v3/ticker/price" 
+            response = requests.request("GET", url, headers=headers)
+            data     = response.json()
 
         except Exception as err:
             return {'message': 'Erro ao fazer GET'}
@@ -32,20 +32,30 @@ class Exchanges:
         } for item in data if item['symbol'] in chosen_crypts]
 
         return data if data else {'message': 'Sem dados para exibir'} 
-    
-    def foxbit(self):
-        return ''
+   
+    #TODO: colocar apis abaixo
+    def brasil_bitcoin(self):
+        pass 
+
+    def bitcoin_trade(self):
+        pass
+
+    def nova_dax(self):
+        pass
+
+    def mercado_bitcoin(self):
+        pass
 
     def execute(self):
 
         start_time = time.time()
+
         binance = self.binance(headers=self.headers, par_crypt='BRL')
-        foxbit = self.foxbit() 
-        
+        brasil_bitcoin = self.brasil_bitcoin()
 
         data = {
                 'binance': binance,
-                'foxbit': foxbit
+                'brasilbitcoin': brasil_bitcoin 
                 }
 
         elapsed_time = time.time() - start_time
