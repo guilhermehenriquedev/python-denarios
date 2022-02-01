@@ -40,8 +40,9 @@ class Exchanges:
         data_brasil_bitcoin = []
         chosen_crypts = criptos()
         for crypto in chosen_crypts:
+            print('crypto br......: ', crypto)
             try:
-                url      = BRASIL_BITCOIN_API_URL + f"/otc/orderbook/{crypto}"
+                url      = BRASIL_BITCOIN_API_URL + "/otc/orderbook/" + crypto
                 response = requests.request("GET", url, headers=headers)
                 data     = response.json()
 
