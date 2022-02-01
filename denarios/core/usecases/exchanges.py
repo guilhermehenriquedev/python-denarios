@@ -30,11 +30,7 @@ class Exchanges:
             'no_cripto': item['symbol'],
             'vl_venda': item['price'],
             'vl_compra': item['price']
-        } for item in data if item['symbol'] in chosen_crypts else
-            'no_cripto': item['symbol'],
-            'vl_venda': '--',
-            'vl_compra': '--'
-        ]
+        } for item in data if item['symbol'] in chosen_crypts]
 
         return data if data else {'message': 'Sem dados para exibir'} 
    
