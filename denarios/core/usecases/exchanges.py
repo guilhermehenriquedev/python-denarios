@@ -48,14 +48,14 @@ class Exchanges:
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
                     'vl_venda': data['sell']['preco'],
-                    'vl_compra' data['buy']['preco']:
+                    'vl_compra': data['buy']['preco']
                 }]
 
             except Exception as err:
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
                     'vl_venda': '---',
-                    'vl_compra' '---':
+                    'vl_compra': '---'
                 }]
                 continue
 
