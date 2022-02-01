@@ -78,10 +78,8 @@ class Exchanges:
 
         start_time = time.time()
 
-        #binance = self.binance(headers=self.headers, par_crypt='BRL')
+        binance = self.binance(headers=self.headers, par_crypt='BRL')
         brasil_bitcoin = self.brasil_bitcoin(headers=self.headers)
-
-        breakpoint()
 
         data = {
                 'binance': binance,
