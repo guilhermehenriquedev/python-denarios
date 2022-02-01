@@ -30,7 +30,11 @@ class Exchanges:
             'no_cripto': item['symbol'],
             'vl_venda': item['price'],
             'vl_compra': item['price']
-        } for item in data if item['symbol'] in chosen_crypts]
+        } for item in data if item['symbol'] in chosen_crypts else
+            'no_cripto': item['symbol'],
+            'vl_venda': '--',
+            'vl_compra': '--'
+        ]
 
         return data if data else {'message': 'Sem dados para exibir'} 
    
@@ -45,17 +49,21 @@ class Exchanges:
                 response = requests.request("GET", url, headers=headers)
                 data     = response.json()
 
+                print('data brasil bit....: ', data)
+
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
                     'vl_venda': data['sell']['preco'],
                     'vl_compra': data['buy']['preco']
                 }]
 
+                print('data....: ', data_brasil_bitcoin)
+
             except Exception as err:
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
-                    'vl_venda': '---',
-                    'vl_compra': '---'
+                    'vl_venda': '--',
+                    'vl_compra': '--'
                 }]
                 continue
 
@@ -74,8 +82,10 @@ class Exchanges:
 
         start_time = time.time()
 
-        binance = self.binance(headers=self.headers, par_crypt='BRL')
+        #binance = self.binance(headers=self.headers, par_crypt='BRL')
         brasil_bitcoin = self.brasil_bitcoin(headers=self.headers)
+
+        breakpoint()
 
         data = {
                 'binance': binance,
