@@ -2,7 +2,7 @@ import time
 import requests
 import json
 from denarios.core.helpers.criptos import criptos
-from denarios.settings.base import BINACE_API_URL, BINANCE_API_KEY 
+from denarios.settings.base import * 
 from django.db.utils import InterfaceError
 from datetime import timedelta
 
@@ -27,9 +27,9 @@ class Exchanges:
         chosen_crypts = criptos(par=par_crypt)
 
         data = [{
-            'no_cripto': item['symbol'],
-            'vl_venda': item['price'],
-            'vl_compra': item['price']
+            'no_cripto': item['symbol'][:-3],
+            'vl_venda': round(float(item['price']), 2),
+            'vl_compra': round(float(item['price']), 2)
         } for item in data if item['symbol'] in chosen_crypts]
 
         return data if data else {'message': 'Sem dados para exibir'} 
@@ -46,21 +46,18 @@ class Exchanges:
                 response = requests.request("GET", url, headers=headers)
                 data     = response.json()
 
-                print('data brasil bit....: ', data)
-
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
-                    'vl_venda': data['sell']['preco'],
-                    'vl_compra': data['buy']['preco']
+                    'vl_venda': round(float(data['sell']['preco']), 2),
+                    'vl_compra': round(float(data['buy']['preco']), 2)
                 }]
 
-                print('data....: ', data_brasil_bitcoin)
 
             except Exception as err:
                 data_brasil_bitcoin += [{
                     'no_cripto': crypto,
-                    'vl_venda': '--',
-                    'vl_compra': '--'
+                    'vl_venda': 'NDA',
+                    'vl_compra': 'NDA'
                 }]
                 continue
 
