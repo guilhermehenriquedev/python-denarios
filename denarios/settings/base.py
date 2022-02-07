@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os, sys
-import django_heroku
+#import django_heroku
 from pathlib import Path
 from decouple import config
 from dj_database_url import parse as dburl
@@ -33,8 +33,11 @@ ENVIRONMENT = config("ENVIRONMENT", default="development")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool, default=False)
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.107', config('SERVER', default='127.0.0.1')]
-ALLOWED_HOSTS = [host for host in config("ALLOWED_HOSTS").split(",")]
+#ALLOWED_HOSTS = [host for host in config("ALLOWED_HOSTS").split(",")]
+ALLOWED_HOSTS = ['*']
 
 #URLS API
 BINACE_API_URL = config("BINANCE_API_URL")
@@ -73,6 +76,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +84,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -164,4 +169,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
