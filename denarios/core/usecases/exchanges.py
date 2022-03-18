@@ -34,7 +34,6 @@ class Exchanges:
 
         return data if data else {'message': 'Sem dados para exibir'} 
    
-
     def brasil_bitcoin(self, headers=None):
          
         data_brasil_bitcoin = []
@@ -51,7 +50,6 @@ class Exchanges:
                     'vl_venda': round(float(data['sell']['preco']), 2),
                     'vl_compra': round(float(data['buy']['preco']), 2)
                 }]
-
 
             except Exception as err:
                 data_brasil_bitcoin += [{
@@ -71,8 +69,12 @@ class Exchanges:
                 url = NOVADAX_API_URL + f"/market/trades?symbol={crypto}_BRL&limit=2"
                 response = requests.request("GET", url, headers=headers)
                 data     = response.json()
-                data_novadax += [
-                    
+                print('data....> ', data)
+                data_novadax += [{
+                    'no_cripto': crypto,
+                    'vl_venda': 'NDA',
+                    'vl_compra': 'NDA'
+                }
                 ]
                 print('data....: ', data)
             except Exception as err:
