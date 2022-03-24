@@ -1,6 +1,4 @@
-import time
 import requests
-import json
 from denarios.core.helpers.criptos import criptos
 from denarios.settings.base import * 
 from django.db.utils import InterfaceError
@@ -31,8 +29,8 @@ class Exchanges:
         except Exception as err:
             data_binance = {
                 'exchange': 'Binance',
-                'vl_venda': 'NDA',
-                'vl_compra': 'NDA'
+                'vl_venda': 'Indisponível',
+                'vl_compra': 'Indisponível'
             } 
 
         return data_binance 
@@ -53,13 +51,13 @@ class Exchanges:
         except Exception as err:
             data_brasil_bitcoin = {
                 'Exchange': 'Brasil Bitcoin',
-                'vl_venda': 'NDA',
-                'vl_compra': 'NDA'
+                'vl_venda': 'Indisponível',
+                'vl_compra': 'Indisponível'
             }
 
         return data_brasil_bitcoin
     
-    def nova_dax(self, headers=None):
+    def nova_dax(self, headers=None, crypt=None):
         pass
 
     def mercado_bitcoin(self):
