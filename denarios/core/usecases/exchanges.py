@@ -7,9 +7,11 @@ from datetime import timedelta
 
 class Exchanges:
 
-    def __init__(self):
-       self.headers = {
-            'Content-Type': 'application/json'
+    def __init__(self, api_key=None):
+        
+        self.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': api_key
         } 
 
     def binance(self, headers=None, par_crypt=None, crypt=None):
@@ -60,6 +62,7 @@ class Exchanges:
     def nova_dax(self, headers=None, par_crypt=None, crypt=None):
         
         crypt_get = crypt + "_" + par_crypt
+        
         try:
             url = NOVADAX_API_URL + f"/market/depth?symbol={crypt_get}"
             response = requests.request("GET", url, headers=headers)
@@ -80,10 +83,22 @@ class Exchanges:
         
         return data_nova_dax
 
+    def bitcoin_trade(self, headers=None, par_crypt=None, crypt=None):
+        
+        crypt_get = par_crypt + crypt
+        print('headers...: ', headers)
+        
+        try:
+            url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker"
+            response = requests.request("GET", url, headers=headers)
+            data = response.json()
+            
+            print('data bitcoin trade *******', data)
+            
+        except Exception as err:
+            print('******Error')
+        
     def mercado_bitcoin(self, headers=None, crypt=None):
-        pass
-
-    def bitcoin_trade(self, headers=None, crypt=None):
         pass
 
     def execute(self):
@@ -94,6 +109,8 @@ class Exchanges:
             binance = self.binance(headers=self.headers, par_crypt='BRL', crypt=crypt)
             brasil_bitcoin = self.brasil_bitcoin(headers=self.headers, crypt=crypt)
             nova_dax = self.nova_dax(headers=self.headers, par_crypt='BRL', crypt=crypt)
+            bitcoin_trade = self.bitcoin_trade(headers=self.headers, par_crypt='BRL', crypt=crypt)
+            
             data += [{crypt: [binance, brasil_bitcoin, nova_dax,]}]
 
         return data 
