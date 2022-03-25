@@ -10,9 +10,8 @@ class Exchanges:
     def __init__(self, api_key=None):
         
         self.headers = {
-            'Content-Type': 'application/json',
-            'Authorization': api_key
-        } 
+            'Content-Type': 'application/json'
+        }
 
     def binance(self, headers=None, par_crypt=None, crypt=None):
 
@@ -86,10 +85,8 @@ class Exchanges:
     def bitcoin_trade(self, headers=None, par_crypt=None, crypt=None):
         
         crypt_get = par_crypt + crypt
-        print('headers...: ', headers)
-        
         try:
-            url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker"
+            url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker?x-api-key=U2FsdGVkX19hx5WwkPxaLUB8vHGGbFWJNvCGY1yne9jwy9tgGxC6AWWnHkHVyxr0"
             response = requests.request("GET", url, headers=headers)
             data = response.json()
             
