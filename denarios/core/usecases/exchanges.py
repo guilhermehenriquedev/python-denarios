@@ -4,7 +4,7 @@ from denarios.settings.base import *
 
 class Exchanges:
 
-    def __init__(self, api_key=None):
+    def __init__(self, headers):
         
         self.headers = {
             'Content-Type': 'application/json'
@@ -28,8 +28,8 @@ class Exchanges:
             print('ERRO BINANCE ****** ', err)
             data_binance = {
                 'exchange': 'Binance',
-                'vl_venda': 'Indisponível',
-                'vl_compra': 'Indisponível'
+                'vl_venda': 0.00,
+                'vl_compra': 0.00
             } 
 
         return data_binance 
@@ -50,9 +50,9 @@ class Exchanges:
         except Exception as err:
             print('ERRO BRASIL BITCOIN ****** ', err)
             data_brasil_bitcoin = {
-                'Exchange': 'Brasil Bitcoin',
-                'vl_venda': 'Indisponível',
-                'vl_compra': 'Indisponível'
+                'exchange': 'Brasil Bitcoin',
+                'vl_venda': 0.00,
+                'vl_compra': 0.00
             }
 
         return data_brasil_bitcoin
@@ -66,7 +66,7 @@ class Exchanges:
             data = response.json()
             
             data_nova_dax = {
-                'Exchange': 'Nova Dax',
+                'exchange': 'Nova Dax',
                 'vl_venda': round(float(data['data']['asks'][0][0]), 2),
                 'vl_compra': round(float(data['data']['bids'][0][0]), 2)
             }
@@ -74,9 +74,9 @@ class Exchanges:
         except Exception as err:
             print('ERRO NOVA DAX ****** ', err)
             data_nova_dax = {
-                'Exchange': 'Nova Dax',
-                'vl_venda': 'Indisponível',
-                'vl_compra': 'Indisponível'
+                'exchange': 'Nova Dax',
+                'vl_venda': 0.00,
+                'vl_compra': 0.00
             }
         
         return data_nova_dax
@@ -88,7 +88,7 @@ class Exchanges:
             response = requests.request("GET", url, headers=headers)
             data = response.json()
             data_mercado_bitcoin = {
-                'Exchange': 'Mercado Bitcoin',
+                'exchange': 'Mercado Bitcoin',
                 'vl_venda': round(float(data['ticker']['sell']), 2),
                 'vl_compra': round(float(data['ticker']['buy']), 2)
             }
@@ -96,9 +96,9 @@ class Exchanges:
         except Exception as err:
             print('ERRO MERCADO BITCOIN ****** ', err)
             data_mercado_bitcoin = {
-                'Exchange': 'Mercado Bitcoin',
-                'vl_venda': 'Indisponível',
-                'vl_compra': 'Indisponível'
+                'exchange': 'Mercado Bitcoin',
+                'vl_venda': 0.00,
+                'vl_compra': 0.00
             }
 
         return data_mercado_bitcoin
@@ -110,7 +110,8 @@ class Exchanges:
             url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker"
             response = requests.request("GET", url, headers=headers)
             data = response.json()
-                        
+            print('data bitcoin trade ****** ', data)
+            
         except Exception as err:
             pass
         
@@ -123,7 +124,8 @@ class Exchanges:
             brasil_bitcoin = self.brasil_bitcoin(headers=self.headers, crypt=crypt)
             nova_dax = self.nova_dax(headers=self.headers, par_crypt='BRL', crypt=crypt)
             mercado_bitcoin = self.mercado_bitcoin(headers=self.headers, crypt=crypt)
-            #bitcoin_trade = self.bitcoin_trade(headers=self.headers, par_crypt='BRL', crypt=crypt)
+            
+            bitcoin_trade = self.bitcoin_trade(headers=self.headers, par_crypt='BRL', crypt=crypt)
             
             data += [{crypt: [binance, brasil_bitcoin, nova_dax, mercado_bitcoin]}]
 
