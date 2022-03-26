@@ -1,9 +1,6 @@
-from urllib import response
 import requests
 from denarios.core.helpers.criptos import criptos
 from denarios.settings.base import * 
-from django.db.utils import InterfaceError
-from datetime import timedelta
 
 class Exchanges:
 
@@ -28,6 +25,7 @@ class Exchanges:
             } 
 
         except Exception as err:
+            print('ERRO BINANCE ****** ', err)
             data_binance = {
                 'exchange': 'Binance',
                 'vl_venda': 'Indisponível',
@@ -50,6 +48,7 @@ class Exchanges:
             }
 
         except Exception as err:
+            print('ERRO BRASIL BITCOIN ****** ', err)
             data_brasil_bitcoin = {
                 'Exchange': 'Brasil Bitcoin',
                 'vl_venda': 'Indisponível',
@@ -61,7 +60,6 @@ class Exchanges:
     def nova_dax(self, headers=None, par_crypt=None, crypt=None):
         
         crypt_get = crypt + "_" + par_crypt
-        
         try:
             url = NOVADAX_API_URL + f"/market/depth?symbol={crypt_get}"
             response = requests.request("GET", url, headers=headers)
@@ -74,6 +72,7 @@ class Exchanges:
             }
             
         except Exception as err:
+            print('ERRO NOVA DAX ****** ', err)
             data_nova_dax = {
                 'Exchange': 'Nova Dax',
                 'vl_venda': 'Indisponível',
@@ -82,33 +81,51 @@ class Exchanges:
         
         return data_nova_dax
 
+    def mercado_bitcoin(self, headers=None, crypt=None):
+        
+        try:
+            url = MERCADO_BITCOIN_API_URL + f"/{crypt}/ticker/"
+            response = requests.request("GET", url, headers=headers)
+            data = response.json()
+            data_mercado_bitcoin = {
+                'Exchange': 'Mercado Bitcoin',
+                'vl_venda': round(float(data['ticker']['sell']), 2),
+                'vl_compra': round(float(data['ticker']['buy']), 2)
+            }
+
+        except Exception as err:
+            print('ERRO MERCADO BITCOIN ****** ', err)
+            data_mercado_bitcoin = {
+                'Exchange': 'Mercado Bitcoin',
+                'vl_venda': 'Indisponível',
+                'vl_compra': 'Indisponível'
+            }
+
+        return data_mercado_bitcoin
+
     def bitcoin_trade(self, headers=None, par_crypt=None, crypt=None):
         
         crypt_get = par_crypt + crypt
         try:
-            url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker?x-api-key=U2FsdGVkX19hx5WwkPxaLUB8vHGGbFWJNvCGY1yne9jwy9tgGxC6AWWnHkHVyxr0"
+            url = BITCOIN_TRADE_API_URL + f"public/{crypt_get}/ticker"
             response = requests.request("GET", url, headers=headers)
             data = response.json()
-            
-            print('data bitcoin trade *******', data)
-            
+                        
         except Exception as err:
-            print('******Error')
+            pass
         
-    def mercado_bitcoin(self, headers=None, crypt=None):
-        pass
-
     def execute(self):
 
-        chosen_crypts = criptos() 
+        chosen_crypts = criptos()
         data = []
         for crypt in chosen_crypts:
             binance = self.binance(headers=self.headers, par_crypt='BRL', crypt=crypt)
             brasil_bitcoin = self.brasil_bitcoin(headers=self.headers, crypt=crypt)
             nova_dax = self.nova_dax(headers=self.headers, par_crypt='BRL', crypt=crypt)
-            bitcoin_trade = self.bitcoin_trade(headers=self.headers, par_crypt='BRL', crypt=crypt)
+            mercado_bitcoin = self.mercado_bitcoin(headers=self.headers, crypt=crypt)
+            #bitcoin_trade = self.bitcoin_trade(headers=self.headers, par_crypt='BRL', crypt=crypt)
             
-            data += [{crypt: [binance, brasil_bitcoin, nova_dax,]}]
+            data += [{crypt: [binance, brasil_bitcoin, nova_dax, mercado_bitcoin]}]
 
         return data 
 
