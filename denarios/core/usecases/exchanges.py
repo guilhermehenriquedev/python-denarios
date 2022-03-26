@@ -4,7 +4,7 @@ from denarios.settings.base import *
 
 class Exchanges:
 
-    def __init__(self, headers):
+    def __init__(self):
         
         self.headers = {
             'Content-Type': 'application/json'
