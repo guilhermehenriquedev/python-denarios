@@ -3,6 +3,7 @@ from denarios.core.helpers.criptos import criptos
 from denarios.settings.base import * 
 
 class Exchanges:
+    ''' Chama as exchanges e faz a acao de consulta dos valores '''
 
     def __init__(self):
         
