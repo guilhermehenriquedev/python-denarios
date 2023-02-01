@@ -11,7 +11,7 @@ from denarios.core.usecases.exchanges import Exchanges
 class ExchangeViewSet(viewsets.ModelViewSet):
 
     permission_classes = (AllowAny,)
-
+    
     @action(detail=False, methods=['get'], url_path='list')
     def exchange_list(self, request):
         ''' Lista todas as criptomoedas das exchanges '''
@@ -24,9 +24,7 @@ class ExchangeViewSet(viewsets.ModelViewSet):
             
             list_exchanges = Exchanges()
             #data = asyncio.run(list_exchanges.execute())
-
-            loop = asyncio.new_event_loop()
-            data = loop.run_until_complete(list_exchanges.execute())
+            data = list_exchanges.execute()
 
             elapsed_time = time.time() - start_time
             print(f'Tempo decorrido: {time.strftime("%H:%M:%S", time.gmtime(elapsed_time))}')
