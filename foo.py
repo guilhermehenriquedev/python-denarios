@@ -1,6 +1,7 @@
 import requests
 
 
+
 def test_get():
     # Define a URL da API da Brasil Bitcoin
     url = 'https://api.brasilbitcoin.com.br/v3/public/'
