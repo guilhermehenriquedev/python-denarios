@@ -14,16 +14,16 @@ class Exchanges:
     def binance(self, headers=None, par_crypt=None, crypt=None):
 
         try:
-            print('binance...: ', crypt)
+
             crypt_get = crypt + par_crypt
-            url      = BINACE_API_URL + f"/api/v3/ticker/price?symbol={crypt_get}" 
-            response = requests.request("GET", url, headers=headers)
-            data     = response.json()
+            url       = BINACE_API_URL + f"/ticker/24hr?symbol={crypt_get}" 
+            response  = requests.get(url)
+            data      = response.json()
 
             data_binance = {
                 'exchange': 'Binance',
-                'vl_venda': round(float(data['price']), 2),
-                'vl_compra': round(float(data['price']), 2)
+                'vl_venda': round(float(data['askPrice']), 2),
+                'vl_compra': round(float(data['bidPrice']), 2)
             } 
 
         except Exception as err:
