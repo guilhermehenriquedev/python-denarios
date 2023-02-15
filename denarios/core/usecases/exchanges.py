@@ -59,7 +59,7 @@ class Exchanges:
             }
 
         return data_brasil_bitcoin
-    
+
     def nova_dax(self, headers=None, par_crypt=None, crypt=None):
         
         crypt_get = crypt + "_" + par_crypt
